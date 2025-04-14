@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: background-color 0.3s, color 0.3s;
+  font-family: sans-serif;
+  font-size: 20px;
+  font-weight: 100;
+}
+
+#bgColorPicker {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+#themeInput {
+  position: absolute;
+  top: 10px;
+  left: 70px;
+  z-index: 10;
+  width: 200px;
+  font-size: 14px;
+  font-weight: 100;
+  border: 1px solid #ccc;
+  padding: 3px;
+  border-radius: 3px;
+  outline: none;
+}
+
+#generateButton {
+  position: absolute;
+  top: 10px;
+  left: 280px;
+  z-index: 10;
+  font-size: 14px;
+  font-weight: 100;
+  padding: 4px 8px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #f6edda;
+}
+
+/* Центрируем контейнер и поворачиваем */
+#pattern-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  transform-origin: center;
+  white-space: nowrap;
+  opacity: 0.8;
+  user-select: none;
+}
+
+.pattern-line {
+  line-height: 1.5em;
+}
+
+.word {
+  padding: 0px 14px;	
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: inline-block;
+}
+
+.word.show {
+  opacity: 1;
+}
