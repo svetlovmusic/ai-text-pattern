@@ -183,8 +183,8 @@
 
 		const data = await response.json();
 		console.log(data);
-		const generatedWords = JSON.parse(data.choices[0].message.content);
-		words = generatedWords;
+		const generatedContent = JSON.parse(data.choices[0].message.content); //choices[0].message.content
+		words = generatedContent.words;
 		generatePatternLines(5000);
 
 	  } catch (error) {
