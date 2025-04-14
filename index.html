@@ -65,35 +65,6 @@
 	.pattern-line {
 	  line-height: 1.5em;
 	}
-
-	/* «Системное сообщение» вместо модального окна */
-	#systemMessage {
-	  display: none; /* по умолчанию скрыто */
-	  position: fixed;
-	  bottom: 10px;
-	  right: 10px;
-	  background: #ffffff;
-	  border: 1px solid #ccc;
-	  border-radius: 8px;
-	  z-index: 9999;
-	  padding: 20px;
-	  min-width: 300px;
-	  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-	}
-
-	#systemMessage h3 {
-	  margin-top: 0;
-	}
-
-	#tokenInput {
-	  width: 100%;
-	  margin-bottom: 10px;
-	}
-
-	#saveTokenButton {
-	  padding: 5px 10px;
-	  cursor: pointer;
-	}
   </style>
 </head>
 <body>
@@ -102,21 +73,18 @@
   <button id="generateButton">Gen</button>
   <div id="pattern-container"></div>
 
-  <!-- «Системное сообщение» -->
-  <div id="systemMessage">
-	<div id="systemMessageContent">
-	  <h3>Введите API токен</h3>
-	  <input type="password" id="tokenInput" placeholder="sk-..." />
-	  <button id="saveTokenButton">Сохранить</button>
-	</div>
-  </div>
-
   <script>
-	let words = [
-	  "Гитара", "Компрессор", "Аудиоинтерфейс", "Эквалайзер",
-	  "Педаль", "Слайдер", "Драм-машинка", "Микшер",
-	  "Сэмплер", "Микрофон", "Студийные", "Мониторы"
-	];
+	let words = [];
+	
+	fetch('words.json')
+	  .then(res => res.json())
+	  .then(data => {
+		words = data;
+		generatePatternLines(5000);
+	  })
+	  .catch(err => {
+		console.error("Ошибка загрузки слов:", err);
+	  });
 
 	function shuffleArray(array) {
 	  for (let i = array.length - 1; i > 0; i--) {
@@ -154,7 +122,7 @@
 	  container.appendChild(fragment);
 	}
 
-	generatePatternLines(5000);
+	generatePatternLines(500);
 
 	const bgColorPicker = document.getElementById('bgColorPicker');
 	bgColorPicker.addEventListener('input', (e) => {
@@ -170,31 +138,18 @@
 	const generateButton = document.getElementById('generateButton');
 	const themeInput = document.getElementById('themeInput');
 
-	const systemMessage = document.getElementById('systemMessage');
-	const tokenInput = document.getElementById('tokenInput');
-	const saveTokenButton = document.getElementById('saveTokenButton');
-
-	function showSystemMessage() {
-	  systemMessage.style.display = 'block';
-	}
-
-	saveTokenButton.addEventListener('click', () => {
-	  const token = tokenInput.value.trim();
-	  if (token) {
-		localStorage.setItem('openai_token', token);
-		systemMessage.style.display = 'none';
-		generateFromTheme();
-	  }
-	});
-
 	async function generateFromTheme() {
 	  const theme = themeInput.value.trim();
 	  if (!theme) return;
 
-	  const OPENAI_API_KEY = localStorage.getItem('openai_token');
+	  let OPENAI_API_KEY = localStorage.getItem('openai_token');
 	  if (!OPENAI_API_KEY) {
-		showSystemMessage();
-		return;
+		OPENAI_API_KEY = prompt('Введите API токен (sk-...)');
+		if (OPENAI_API_KEY) {
+		  localStorage.setItem('openai_token', OPENAI_API_KEY);
+		} else {
+		  return;
+		}
 	  }
 
 	  try {
@@ -222,7 +177,7 @@
 		});
 
 		if (!response.ok) {
-		  console.log("Error:", response.status);
+		  console.log("Ошибка при запросе:", response.status);
 		  return;
 		}
 
@@ -232,7 +187,7 @@
 		generatePatternLines(5000);
 
 	  } catch (error) {
-		console.log("Error:", error);
+		console.log("Ошибка:", error);
 	  }
 	}
 
