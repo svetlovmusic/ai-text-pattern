@@ -100,8 +100,8 @@
 </head>
 <body>
   <input type="color" id="bgColorPicker" value="#f6edda">
-  <input type="text" id="themeInput" placeholder="Введите тему...">
-  <button id="generateButton">Сгенерировать</button>
+  <input type="text" id="themeInput" placeholder="Input theme...">
+  <button id="generateButton">Gen</button>
   <div id="pattern-container"></div>
 
   <!-- Модальное окно -->
@@ -231,7 +231,7 @@
 		const data = await response.json();
 		const generatedWords = JSON.parse(data.choices[0].message.content);
 		words = generatedWords;
-		generatePatternLines(500);
+		generatePatternLines(5000);
 
 	  } catch (error) {
 		console.log("Ошибка:", error);
