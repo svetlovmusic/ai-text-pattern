@@ -44,6 +44,15 @@
   </style>
 </head>
 <body>
+	<!-- Модальное окно -->
+	<div id="tokenModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+	  <div style="background:white; padding:20px; border-radius:8px; min-width:300px;">
+		<h3>Введите API токен</h3>
+		<input type="password" id="tokenInput" style="width:100%; margin-bottom:10px;" placeholder="sk-...">
+		<button id="saveTokenButton">Сохранить</button>
+	  </div>
+	</div>
+	
   <!-- Инпут для смены цвета фона -->
   <input type="color" id="bgColorPicker" value="#f6edda">
 
@@ -51,217 +60,21 @@
   <div id="pattern-container"></div>
 
   <script>
-	// Массив слов, который можно менять и дополнять
-	const words = [
-	  "Гитара",
-	  "Компрессор",
-	  "Аудиоинтерфейс",
-	  "Эквалайзер",
-	  "Педаль",
-	  "Слайдер",
-	  "Драм-машинка",
-	  "Микшер",
-	  "Сэмплер",
-	  "Микрофон",
-	  "Студийные",
-	  "Мониторы",
-	  "Наушники",
-	  "Библиотека",
-	  "Плагин",
-	  "Гитарный усилитель",
-	  "Ламповый усилитель",
-	  "Дилей",
-	  "Хорус",
-	  "Флэнджер",
-	  "Овердрайв",
-	  "Фузз",
-	  "Wah-педаль",
-	  "Ревербератор",
-	  "Директ-бокс",
-	  "Тюнер",
-	  "Рекордер",
-	  "Секвенсор",
-	  "MIDI-клавиатура",
-	  "Синтезатор",
-	  "Звуковая карта",
-	  "Мастеринг-плагин",
-	  "Коллекция семплов",
-	  "MIDI-контроллер",
-	  "Преамп",
-	  "AD/DA-конвертер",
-	  "Аудиоканал",
-	  "Цифровой реверб",
-	  "Дека",
-	  "Чейн эффектов",
-	  "Триггер",
-	  "Патч-корд",
-	  "Мультиэффект",
-	  "Гитарная стойка",
-	  "Кабель XLR",
-	  "Поп-фильтр",
-	  "USB-микрофон",
-	  "Конденсаторный микрофон",
-	  "Динамический микрофон",
-	  "Гиперкардиоидный микрофон",
-	  "Переходник",
-	  "Мультиканальный микшер",
-	  "Балансный выход",
-	  "Роутинг",
-	  "FireWire-интерфейс",
-	  "Thunderbolt-интерфейс",
-	  "Линеечный вход",
-	  "Сабвуфер",
-	  "Акустическая гитара",
-	  "Электрогитара",
-	  "Гитарный процессор",
-	  "Кабинет",
-	  "Расширение плагинов",
-	  "Стереопара",
-	  "Попсовый пресет",
-	  "Рок-пресет",
-	  "EDM-пресет",
-	  "Мастер-трек",
-	  "Групповой канал",
-	  "Сайдчейн",
-	  "Бит-контроллер",
-	  "Хип-хоп пресет",
-	  "Снейр",
-	  "Кик",
-	  "Хай-хет",
-	  "Пэд",
-	  "Луп",
-	  "Шаблон",
-	  "Виртуальный инструмент",
-	  "Арпеджиатор",
-	  "Моно-синтез",
-	  "Полифония",
-	  "Эмуляция усилителей",
-	  "Сцена сведения",
-	  "Бинауральный эффект",
-	  "Мастер-шина",
-	  "Двойная компрессия",
-	  "Экспандер",
-	  "Гейт",
-	  "Импульсная свёртка",
-	  "IR-файл",
-	  "Басс-гитара",
-	  "Драм-пэд",
-	  "DJ-контроллер",
-	  "Звуковой генератор",
-	  "Стереоимиджер",
-	  "Пэнорамирование",
-	  "Многополосная компрессия",
-	  "Фильтр низких частот",
-	  "Фильтр высоких частот",
-	  "Сатурация",
-	  "Тейп-симуляция",
-	  "Мастер-секция",
-	  "Автоматизация",
-	  "Сторожевой плагин",
-	  "Тонгенератор",
-	  "Постфейдерный посыл",
-	  "Префейдерный посыл",
-	  "Ручка громкости",
-	  "Декликер",
-	  "Ноузисподавление",
-	  "Звуковой движок",
-	  "Траектория сигнала",
-	  "Touch-автоматизация",
-	  "Latch-автоматизация",
-	  "Write-автоматизация",
-	  "Снэпшот автоматизации",
-	  "Транзиент-шейпер",
-	  "Лимитер",
-	  "Банда-процесс",
-	  "VCA-фейдер",
-	  "Смарт-контроллер",
-	  "Инверсия фазы",
-	  "Фаза сигнала",
-	  "Тест-тон",
-	  "Браузер плагинов",
-	  "Гейтированный реверб",
-	  "Ди-бокс",
-	  "МИД-сайд обработка",
-	  "Псевдостерео",
-	  "Разделение каналов",
-	  "Смычковая библиотека",
-	  "Хоровая библиотека",
-	  "Библиотека ударных",
-	  "Струнные секции",
-	  "Педаль экспрессии",
-	  "S/PDIF",
-	  "AES/EBU",
-	  "MIDI-порт",
-	  "Тракт микрофона",
-	  "Амбисоник",
-	  "Софтсинт",
-	  "Цифровой микшер",
-	  "Маппинг контроллера",
-	  "Макрос",
-	  "Аранжировочный вид",
-	  "Микшировочный вид",
-	  "Мастер-метр",
-	  "Пиковый индикатор",
-	  "RMS-индикатор",
-	  "LUFS-индикатор",
-	  "Гармонизация",
-	  "Питч-коррекция",
-	  "Автотюн",
-	  "Фильтр-эффект",
-	  "Динамический эквалайзер",
-	  "Параметрический эквалайзер",
-	  "Графический эквалайзер",
-	  "Виртуальный кабинет",
-	  "Мультибенд компрессор",
-	  "Сайдчейн-эквалайзер",
-	  "Драм-рэк",
-	  "Сцена Live",
-	  "Роутер сигнала",
-	  "Биты",
-	  "Аранжировщик",
-	  "Трекер",
-	  "Степ-секвенсор",
-	  "Шинный микшер",
-	  "Луп-станция",
-	  "Мастер-блок",
-	  "Экспрессия",
-	  "Педаль сустейна",
-	  "MIDI-нота",
-	  "MIDI-канал",
-	  "MIDI-программа",
-	  "Ручка панорамы",
-	  "Синхронизация часов",
-	  "Темп-трек",
-	  "Глобальный темп",
-	  "Маркеры",
-	  "Звуковая сцена",
-	  "Спектральный анализатор",
-	  "Модуль синтеза",
-	  "Шинная компрессия",
-	  "Псевдомоно",
-	  "Мультикор",
-	  "Звуковой драйвер",
-	  "Цифровая рабочая станция",
-	  "Шина эффектов",
-	  "Аутборд-устройство",
-	  "Мастер-фейдер",
-	  "Виртуальный микшер",
-	  "Кроссовер",
-	  "Сабмикширование",
-	  "Динамическая сцена",
-	  "Волновая форма",
-	  "Срез частот",
-	  "Битклипер",
-	  "Звукоизвлечение"
+	// Изначальный массив слов
+	let words = [
+	  "Гитара", "Компрессор", "Аудиоинтерфейс", "Эквалайзер", "Педаль", "Слайдер",
+	  "Драм-машинка", "Микшер", "Сэмплер", "Микрофон", "Студийные", "Мониторы"
 	];
-
+  
+	// Перемешивание массива
 	function shuffleArray(array) {
 	  for (let i = array.length - 1; i > 0; i--) {
-		const j = (Math.random() * (i + 1)) | 0; // Быстрее, чем Math.floor
+		const j = (Math.random() * (i + 1)) | 0;
 		[array[i], array[j]] = [array[j], array[i]];
 	  }
 	}
-	
+  
+	// Контраст текста
 	function getLuminance(hex) {
 	  hex = hex.replace('#', '');
 	  const r = parseInt(hex.substring(0, 2), 16) / 255;
@@ -269,45 +82,113 @@
 	  const b = parseInt(hex.substring(4, 6), 16) / 255;
 	  return 0.299 * r + 0.587 * g + 0.114 * b;
 	}
-	
+  
 	function getTextColorForBackground(hex) {
 	  return getLuminance(hex) > 0.5 ? "#666666" : "#eeeeee";
 	}
-	
+  
+	// Генерация строк
 	function generatePatternLines(lineCount) {
 	  const container = document.getElementById('pattern-container');
-	  container.textContent = ''; // Быстрее и безопаснее, чем innerHTML = ''
-	
+	  container.textContent = '';
 	  const fragment = document.createDocumentFragment();
-	
+  
 	  for (let i = 0; i < lineCount; i++) {
-		const tempWords = [...words]; // Если words очень большой, можно избегать копирования
+		const tempWords = [...words];
 		shuffleArray(tempWords);
-	
+  
 		const lineDiv = document.createElement('div');
 		lineDiv.className = 'pattern-line';
 		lineDiv.textContent = tempWords.join(' ');
 		fragment.appendChild(lineDiv);
 	  }
-	
+  
 	  container.appendChild(fragment);
 	}
-	
+  
 	// Начальная генерация
 	generatePatternLines(500);
-	
-	// Обработчик изменения цвета
+  
+	// Цвет фона
 	const bgColorPicker = document.getElementById('bgColorPicker');
 	bgColorPicker.addEventListener('input', (e) => {
 	  const bgColor = e.target.value;
 	  document.body.style.backgroundColor = bgColor;
 	  document.body.style.color = getTextColorForBackground(bgColor);
 	});
-	
-	// Установка начального цвета
+  
 	const initialBg = bgColorPicker.value;
 	document.body.style.backgroundColor = initialBg;
 	document.body.style.color = getTextColorForBackground(initialBg);
+  
+	// Модалка
+	function showTokenModal() {
+	  document.getElementById('tokenModal').style.display = 'flex';
+	}
+  
+	document.getElementById('saveTokenButton').addEventListener('click', () => {
+	  const token = document.getElementById('tokenInput').value.trim();
+	  if (token) {
+		localStorage.setItem('openai_token', token);
+		document.getElementById('tokenModal').style.display = 'none';
+		generateFromTheme();
+	  }
+	});
+  
+	const generateButton = document.getElementById('generateButton');
+	const themeInput = document.getElementById('themeInput');
+  
+	async function generateFromTheme() {
+	  const theme = themeInput.value.trim();
+	  if (!theme) return;
+  
+	  const OPENAI_API_KEY = localStorage.getItem('openai_token');
+	  if (!OPENAI_API_KEY) {
+		showTokenModal();
+		return;
+	  }
+  
+	  try {
+		const response = await fetch("https://api.openai.com/v1/chat/completions", {
+		  method: "POST",
+		  headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${OPENAI_API_KEY}`
+		  },
+		  body: JSON.stringify({
+			model: "gpt-4o",
+			response_format : ["type" : "json_object"],
+			messages: [
+			  {
+				role: "system",
+				content: "You are a helpful assistant that responds in JSON format."
+			  },
+			  {
+				role: "user",
+				content: `Generate a JSON array with 100 words related to the theme: ${theme}. Ensure the response is valid JSON, and do not include any additional text or formatting outside the array.`
+			  }
+			],
+			temperature: 0.7
+		  })
+		});
+  
+		if (!response.ok) {
+		  console.log("Ошибка при запросе:", response.status);
+		  return;
+		}
+  
+		const data = await response.json();
+		const generatedWords = JSON.parse(data.choices[0].message.content);
+  
+		words = generatedWords;
+		generatePatternLines(500);
+  
+	  } catch (error) {
+		console.log("Ошибка:", error);
+	  }
+	}
+  
+	generateButton.addEventListener('click', generateFromTheme);
   </script>
 </body>
 </html>
