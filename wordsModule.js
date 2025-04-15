@@ -53,13 +53,23 @@ export function generatePatternLines(lineCount, container) {
 	  lineDiv.appendChild(span);
 	});
 
+	// Временно добавляем строку в контейнер, чтобы можно было измерить
+	container.appendChild(lineDiv);
+	const isOverflowing = lineDiv.getBoundingClientRect().bottom > container.getBoundingClientRect().bottom;
+
+	if (isOverflowing) {
+	  // Если строка выходит за пределы контейнера — удаляем и прекращаем генерацию
+	  container.removeChild(lineDiv);
+	  break;
+	}
+
+	// Если всё ок — оставляем в DOM
 	fragment.appendChild(lineDiv);
   }
 
   container.appendChild(fragment);
   revealWords();
 }
-
 // Постепенное проявление слов
 function revealWords() {
   const allWords = document.querySelectorAll(".word");
