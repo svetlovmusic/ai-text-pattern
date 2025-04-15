@@ -4,12 +4,18 @@ import { setWords, generatePatternLines } from "./wordsModule.js";
 export async function generateFromTheme(theme, container) {
   if (!theme) return;
 
+  const loadingBar = document.getElementById("loading-bar");
+  loadingBar.style.width = "0%";
+  loadingBar.style.display = "block";
+  setTimeout(() => loadingBar.style.width = "90%", 50);
+
   let OPENAI_API_KEY = localStorage.getItem("openai_token");
   if (!OPENAI_API_KEY) {
 	OPENAI_API_KEY = prompt("Введите API токен (sk-...)");
 	if (OPENAI_API_KEY) {
 	  localStorage.setItem("openai_token", OPENAI_API_KEY);
 	} else {
+	  loadingBar.style.display = "none";
 	  return;
 	}
   }
@@ -44,13 +50,17 @@ export async function generateFromTheme(theme, container) {
 	}
 
 	const data = await response.json();
-	// Ожидаем, что data.choices[0].message.content будет строкой с JSON
 	const generatedContent = JSON.parse(data.choices[0].message.content);
 
-	// Устанавливаем новые слова и перегенерируем линии
 	setWords(generatedContent.words);
-	generatePatternLines(100, container);
+	generatePatternLines(10, container);
   } catch (error) {
 	console.log("Ошибка:", error);
+  } finally {
+	loadingBar.style.width = "100%";
+	setTimeout(() => {
+	  loadingBar.style.display = "none";
+	  loadingBar.style.width = "0%";
+	}, 300);
   }
 }

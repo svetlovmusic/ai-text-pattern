@@ -75,3 +75,14 @@ body {
 .word.show {
   opacity: 1;
 }
+
+#loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background-color: red;
+  z-index: 9999;
+  transition: width 0.3s ease-out;
+}
