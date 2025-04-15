@@ -83,7 +83,7 @@ export function generatePatternLines(lineCount, container) {
 	  // Добавляем «реальное» слово в строку
 	  const realSpan = document.createElement("span");
 	  realSpan.className = "word";
-	  realSpan.textContent = word + " ";
+	  realSpan.innerHTML = word + " ";
 	  lineDiv.appendChild(realSpan);
 
 	  // Обновляем текущую ширину строки
@@ -109,12 +109,21 @@ export function generatePatternLines(lineCount, container) {
   revealWords();
 }
 
-// Постепенное проявление слов
-function revealWords() {
-  const allWords = document.querySelectorAll(".word");
-  const indices = Array.from({ length: allWords.length }, (_, i) => i);
+function isInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+	rect.bottom >= 0 &&
+	rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+	rect.right >= 0 &&
+	rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
 
-  // Перемешиваем массив индексов
+function revealWords() {
+  const allWords = Array.from(document.querySelectorAll(".word"));
+  const visibleWords = allWords.filter(isInViewport);
+  const indices = Array.from({ length: visibleWords.length }, (_, i) => i);
+
   shuffleArray(indices);
 
   let index = 0;
@@ -124,7 +133,7 @@ function revealWords() {
 	  return;
 	}
 	const wordIndex = indices[index];
-	allWords[wordIndex].classList.add("show");
+	visibleWords[wordIndex].classList.add("show");
 	index++;
-  }, 100);
+  }, 50);
 }

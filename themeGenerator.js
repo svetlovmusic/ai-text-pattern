@@ -37,7 +37,7 @@ export async function generateFromTheme(theme, container) {
 		  },
 		  {
 			role: "user",
-			content: `Generate a JSON object with the key "words" that contains an array of 100 words related to the theme: ${theme}. Ensure the response is valid JSON and do not include any additional text or formatting outside the object.`,
+			content: `Generate a JSON object with the key "elements" that contains an array of 150 elements related to the theme: ${theme}. Ensure the response is valid JSON and do not include any additional text or formatting outside the object.`,
 		  },
 		],
 		temperature: 0.7,
@@ -52,8 +52,8 @@ export async function generateFromTheme(theme, container) {
 	const data = await response.json();
 	const generatedContent = JSON.parse(data.choices[0].message.content);
 
-	setWords(generatedContent.words);
-	generatePatternLines(10, container);
+	setWords(generatedContent.elements);
+	generatePatternLines(20, container);
   } catch (error) {
 	console.log("Ошибка:", error);
   } finally {

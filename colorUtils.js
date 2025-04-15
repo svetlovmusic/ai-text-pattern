@@ -11,5 +11,5 @@ export function getLuminance(hex) {
 
 // Возвращает более читаемый цвет текста
 export function getTextColorForBackground(hex) {
-  return getLuminance(hex) > 0.5 ? "#666666" : "#eeeeee";
+  return getLuminance(hex) > 0.6 ? "#666666" : "#eeeeee";
 }
