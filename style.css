@@ -46,15 +46,16 @@ body {
 /* Центрируем контейнер и поворачиваем */
 #pattern-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150%;
-  height: 150%;
-  transform: translate(-50%, -50%) rotate(-30deg);
+  top: 0%;
+  left: 0%;
+  width: 50%;
+  height: 50%;
+  transform: rotate(-30deg);
   transform-origin: center;
   white-space: nowrap;
   opacity: 0.8;
   user-select: none;
+  background-color: rgb(199, 199, 199)
 }
 
 .pattern-line {

@@ -10,11 +10,11 @@ const patternContainer = document.getElementById("pattern-container");
 
 // Загрузка слов из файла и первая генерация паттерна
 loadWordsFromJSON("words.json").then(() => {
-  generatePatternLines(100, patternContainer);
+  generatePatternLines(50, patternContainer);
 });
 
 // Начальная генерация (на случай, если нужно показать сразу без загрузки)
-generatePatternLines(100, patternContainer);
+generatePatternLines(50, patternContainer);
 
 // Меняем цвет фона и цвет текста при выборе нового цвета
 function updateBodyColors(bgColor) {
