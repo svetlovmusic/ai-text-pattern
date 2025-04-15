@@ -70,6 +70,7 @@ export function generatePatternLines(lineCount, container) {
   container.appendChild(fragment);
   revealWords();
 }
+
 // Постепенное проявление слов
 function revealWords() {
   const allWords = document.querySelectorAll(".word");
