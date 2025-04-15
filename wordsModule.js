@@ -34,6 +34,7 @@ export function setWords(newWords) {
   words = newWords;
 }
 
+
 // Генерация повторяющихся линий со словами
 export function generatePatternLines(lineCount, container) {
   container.textContent = "";
