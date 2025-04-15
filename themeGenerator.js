@@ -53,7 +53,7 @@ export async function generateFromTheme(theme, container) {
 	const generatedContent = JSON.parse(data.choices[0].message.content);
 
 	setWords(generatedContent.elements);
-	generatePatternLines(20, container);
+	generatePatternLines(40, container);
   } catch (error) {
 	console.log("Ошибка:", error);
   } finally {

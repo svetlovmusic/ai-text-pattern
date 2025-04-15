@@ -130,10 +130,43 @@ function revealWords() {
   const interval = setInterval(() => {
 	if (index >= indices.length) {
 	  clearInterval(interval);
+	  
+	  // Через небольшую задержку запустим вращение
+		setTimeout(() => {
+		  startRandomFlipAnimation(visibleWords);
+		}, 500);
+
+
 	  return;
 	}
 	const wordIndex = indices[index];
 	visibleWords[wordIndex].classList.add("show");
 	index++;
   }, 50);
+}
+
+function startRandomFlipAnimation(words) {
+  function flipWord(word) {
+	if (!word.classList.contains("flip")) {
+	  word.classList.add("flip");
+
+	  word.addEventListener("animationend", () => {
+		word.classList.remove("flip");
+	  }, { once: true });
+	}
+  }
+
+  setInterval(() => {
+	// Копируем массив и перемешиваем его
+	const shuffled = [...words].sort(() => 0.5 - Math.random());
+
+	// Берём первые 10 случайных слов
+	const selected = shuffled.slice(0, 20);
+
+	selected.forEach((word, i) => {
+	  const microDelay = Math.random() * 200; // от 0 до 200 мс
+	  setTimeout(() => flipWord(word), i * 100 + microDelay);
+	});
+
+  }, 10000); // Каждые 2 секунды запускаем новую серию из 10 флипов
 }
